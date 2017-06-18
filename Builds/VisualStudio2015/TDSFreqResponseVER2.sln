@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2015
+Project("{E424EAB2-961B-7E82-7804-FC473A3F51AD}") = "TDSFreqResponseVER2", "TDSFreqResponseVER2.vcxproj", "{A4B7C4C2-0C17-B7FD-368C-389A85B95537}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A4B7C4C2-0C17-B7FD-368C-389A85B95537}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A4B7C4C2-0C17-B7FD-368C-389A85B95537}.Debug|Win32.Build.0 = Debug|Win32
+		{A4B7C4C2-0C17-B7FD-368C-389A85B95537}.Release|Win32.ActiveCfg = Release|Win32
+		{A4B7C4C2-0C17-B7FD-368C-389A85B95537}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
