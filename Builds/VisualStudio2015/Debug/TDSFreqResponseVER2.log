@@ -1,0 +1,53 @@
+﻿  AudioSettingsComponent.cpp
+  Chirp.cpp
+  FrequencyGraphComponent.cpp
+  InfoBarComponent.cpp
+c:\users\stevey\documents\tdsfreqresponsever2\source\chirp.cpp(40): warning C4244: 'return': conversion from 'double' to 'const float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\frequencygraphcomponent.cpp(38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\audiosettingscomponent.cpp(19): warning C4100: 'g': unreferenced formal parameter
+c:\users\stevey\documents\tdsfreqresponsever2\source\chirp.cpp(45): warning C4244: 'return': conversion from 'double' to 'const float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\frequencygraphcomponent.cpp(38): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\frequencygraphcomponent.cpp(49): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\frequencygraphcomponent.cpp(49): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\frequencygraphcomponent.cpp(55): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\frequencygraphcomponent.cpp(77): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\frequencygraphcomponent.cpp(89): warning C4100: 'gF': unreferenced formal parameter
+  LatencyCalibrator.cpp
+  Main.cpp
+  MainComponent.cpp
+  SilentSource.cpp
+c:\users\stevey\documents\tdsfreqresponsever2\source\silentsource.cpp(12): warning C4100: 'sampleRate': unreferenced formal parameter
+c:\users\stevey\documents\tdsfreqresponsever2\source\silentsource.cpp(12): warning C4100: 'samplesPerBlockExpected': unreferenced formal parameter
+c:\users\stevey\documents\tdsfreqresponsever2\source\latencycalibrator.cpp(35): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\latencycalibrator.cpp(36): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\latencycalibrator.cpp(31): warning C4100: 'samplesPerBlockExpected': unreferenced formal parameter
+c:\users\stevey\documents\tdsfreqresponsever2\source\latencycalibrator.cpp(118): warning C4189: 'readPointer': local variable is initialized but not referenced
+c:\users\stevey\documents\tdsfreqresponsever2\source\latencycalibrator.cpp(180): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\latencycalibrator.cpp(195): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\main.cpp(14): warning C4100: 'commandLine': unreferenced formal parameter
+c:\users\stevey\documents\tdsfreqresponsever2\source\main.cpp(29): warning C4100: 'commandLine': unreferenced formal parameter
+c:\users\stevey\documents\tdsfreqresponsever2\source\maincomponent.cpp(53): warning C4100: 'sampleRate': unreferenced formal parameter
+  TdsComponents.cpp
+  TdsSweep.cpp
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdssweep.cpp(20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdssweep.cpp(28): warning C4458: declaration of 'sampleRate' hides class member
+  c:\users\stevey\documents\tdsfreqresponsever2\source\tdssweep.h(20): note: see declaration of 'TdsSweep::sampleRate' (compiling source file ..\..\Source\TdsSweep.cpp)
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdssweep.cpp(31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdssweep.cpp(31): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdssweep.cpp(28): warning C4100: 'sampleRate': unreferenced formal parameter
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdssweep.cpp(28): warning C4100: 'samplesPerBlockExpected': unreferenced formal parameter
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdssweep.cpp(74): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdssweep.cpp(74): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdscomponents.cpp(113): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdscomponents.cpp(105): warning C4100: 'g': unreferenced formal parameter
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdscomponents.cpp(163): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdscomponents.cpp(167): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdscomponents.cpp(167): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdscomponents.cpp(170): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdscomponents.cpp(170): warning C4244: 'initializing': conversion from 'int' to 'const float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdscomponents.cpp(176): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdscomponents.cpp(179): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdscomponents.cpp(179): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdscomponents.cpp(183): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\stevey\documents\tdsfreqresponsever2\source\tdscomponents.cpp(185): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  TDSFreqResponseVER2.vcxproj -> C:\Users\Stevey\Documents\TDSFreqResponseVER2\Builds\VisualStudio2015\Debug\TDSFreqResponseVER2.exe
