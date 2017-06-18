@@ -18,3 +18,9 @@ Stevey Yarusinsky - Initial Work
 
 ## Acknowledgements
 Richard C. Heyser - For his work developing the method of Time Delay Spectrometry. An anthology of his published works ("Time Delay Spectrometry: An Anthology of the Works of Richard C. Heyser on Measurement Analysis and Perception") was an invaluable asset in developing this project.
+
+## Documentation
+Speaker (QSC K8) Frequency Response at 1 ft away with TEF25
+![Speaker (QSC K8) Frequency Response at 1 ft away with TEF25](TEFComparisonSpeakerTrial1_3.PNG?raw=true "Speaker (QSC K8) Frequency Response at 1 ft away with TEF25")
+Speaker (QSC K8) Frequency Response at 1 ft away with OpenTDS and Akai EIE Pro audio interface
+![Speaker (QSC K8) Frequency Response at 1 ft away with OpenTDS and Akai EIE Pro audio interface](TEFComparisonSpeakerTrial1_4.png?raw=true "Speaker (QSC K8) Frequency Response at 1 ft away with OpenTDS and Akai EIE Pro audio interface")
