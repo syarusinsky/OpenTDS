@@ -53,10 +53,10 @@ Time Delay Spectrometry introduces a variable-bandwidth band-pass filter capable
 It is also important to note that the paired oscillator is actually a slightly lower frequency than the oscillator being fed into the loudspeaker due to the delay placed on the paired oscillator. This is necessary to compensate for the amount of time required for the direct sound to reach the microphone. Figure 1a. and Figure 1b. should help visualize the TDS process.
 
 Figure 1a. Block Diagram of TDS
-![Block Diagram of TDS](TDS_Block_Diagram.PNG?raw=true "Block Diagram of TDS")
+![Block Diagram of TDS](TDS Block Diagram.png?raw=true "Block Diagram of TDS")
 
 Figure 1b. TDS Geometry Example
-![TDS Geometry Example](TDS_Geometry_Example.PNG?raw=true "TDS Geometry Example")
+![TDS Geometry Example](TDS Geometry Example.PNG?raw=true "TDS Geometry Example")
 
 ### Frequency Response Comparison
 
