@@ -15,6 +15,7 @@ Currently, the program is capable of producing reliable frequency response graph
   * Improved BandPass Filtering (A Custom IIR Filter Class)
   * Improved Amplitude Calculation (Algorithmically-Selected FFT-Bin-Based Magnitude Instead of Block-Based Magnitude Averages)
   * dB Referencing (Capability to Calibrate the System to Reference Pressure Levels. ie: 20uPa for dBSPL)
+* Increased Driver Support (ASIO currently fully supported)
 
 ## JUCE
 This project was written using the [JUCE framework](https://juce.com/) which provides excellent cross-platform support.
@@ -60,13 +61,14 @@ Figure 1b. TDS Geometry Example
 
 ### Delay in TDS
 
-Since the direct sound is the desired component, the accuracy of the frequency response measurements is determined by the delay placed on the sweeping of the tracking band pass filter. This is known as the *time-of-flight*. In an ideal analog system, this would simply be the time it takes for the sound to travel from the speaker to the microphone. However, this TDS program was designed to be used with any consumer grade audio interface and alllize digital audio concepts. The most important 
+Since the direct sound is the desired component, the accuracy of the frequency response measurements is determined by the delay placed on the sweeping of the tracking band pass filter. This is known as the *time-of-flight*. In an ideal analog system, this would simply be the time it takes for the sound to travel from the speaker to the microphone. However, this TDS program was designed to be used with any consumer grade audio interface and nearly all modern systems utilize digital audio concepts. Most notably, these systems use input and output *audio buffers* to lighten the CPU load. These buffers introduce a *latency*, or delay, into the signal path. While this delay is usually negligible for recording and playback purposes, it is catastrophic for the accuracy of TDS frequency response measurements. In addition, each audio interface will have its own unique latency. In order to be absolutely sure that any latency from any system is accounted for in our *time-of-flight*, OpenTDS allows the user to calibrate latency before taking measurements. The user must plug the output of their system into the input and click the calibrate latency button. After this is operation is performed the user can continue taking measurements until the program is terminated. The next time the program is opened, the user must calibrate the latency again before taking measurements.
 
 ### Frequency Response Comparison
 
-Speaker (QSC K8) Frequency Response at 1 ft away with TEF25
+Speaker (QSC K8) Frequency Response at 1 ft away with TEF25 (Graph is Smoothed by the TEF Software)
 ![Speaker (QSC K8) Frequency Response at 1 ft away with TEF25](TEFComparisonSpeakerTrial1_3.PNG?raw=true "Speaker (QSC K8) Frequency Response at 1 ft away with TEF25")
 Speaker (QSC K8) Frequency Response at 1 ft away with OpenTDS and Akai EIE Pro audio interface
 ![Speaker (QSC K8) Frequency Response at 1 ft away with OpenTDS and Akai EIE Pro audio interface](TEFComparisonSpeakerTrial1_4.png?raw=true "Speaker (QSC K8) Frequency Response at 1 ft away with OpenTDS and Akai EIE Pro audio interface")
 
-Documentation on Time Delay Spectrometry, Installation, and Usage coming soon . . .
+
+Video Tutorials coming soon . . .
