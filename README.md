@@ -58,6 +58,10 @@ Figure 1a. Block Diagram of TDS
 Figure 1b. TDS Geometry Example
 ![TDS Geometry Example](TDS_Geometry_Example.png?raw=true "TDS Geometry Example")
 
+### Delay in TDS
+
+Since the direct sound is the desired component, the accuracy of the frequency response measurements is determined by the delay placed on the sweeping of the tracking band pass filter. This is known as the *time-of-flight*. In an ideal analog system, this would simply be the time it takes for the sound to travel from the speaker to the microphone. However, this TDS program was designed to be used with any consumer grade audio interface and alllize digital audio concepts. The most important 
+
 ### Frequency Response Comparison
 
 Speaker (QSC K8) Frequency Response at 1 ft away with TEF25
