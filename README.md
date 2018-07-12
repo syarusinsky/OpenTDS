@@ -1,7 +1,7 @@
 # OpenTDS
 An Open Source Alternative to Generating Frequency Response and Time Response Graphs by Time Delay Spectrometry
 
-This project was designed as an Open Source alternative to Gold Line's TEF system and other similar (expensive) software and hardware bundles. These systems use Time Delay Spectrometry to achieve frequency response measurements of loudspeakers, rooms, audio circuits, and many other minimal-phase systems without the need of an anechoic chamber. This project benefits from being capable of taking measurements using any modern consumer-grade audio interface, while TEF and other systems require you to purchase their proprietray hardware. The goal of this project is to provide hobbyist and professional acousticians and audio engineers with a means to measure frequency response and time response of without the need to purchase any additional hardware or software.
+This project was designed as an Open Source alternative to Gold Line's TEF system and other similar (expensive) software and hardware bundles. These systems use Time Delay Spectrometry to achieve frequency response measurements of loudspeakers, rooms, audio circuits, and many other minimal-phase systems without the need of an anechoic chamber. This project benefits from being capable of taking measurements using any modern consumer-grade audio interface, while TEF and other systems require you to purchase their proprietray hardware. The goal of this project is to provide hobbyist and professional acousticians and audio engineers with a means to measure frequency response and time response without the need to purchase any additional hardware or software.
 
 ## Current Status
 
