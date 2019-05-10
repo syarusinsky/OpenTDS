@@ -1,9 +1,9 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "FrequencyGraphComponent.h"
 
-FrequencyGraphComponent::FrequencyGraphComponent (Array<float>* gBins, Value* gF)
-:   graphBins (gBins),
-    graphFlag (gF)
+FrequencyGraphComponent::FrequencyGraphComponent (Array<float>* graphingBins, Value* graphingFlag)
+:   graphBins (graphingBins),
+    graphFlag (graphingFlag)
 {
     graphFlag->addListener (this);
 }
@@ -12,6 +12,7 @@ FrequencyGraphComponent::~FrequencyGraphComponent()
 {
 }
 
+// this method graphs the frequency response of the system
 void FrequencyGraphComponent::paint (Graphics& g)
 {
     g.fillAll (Colours::white);
@@ -30,6 +31,7 @@ void FrequencyGraphComponent::paint (Graphics& g)
 
     const float dL[2] = {4.0, 2.0};
 
+    // draw dotted lines for x axis
     for (int i = 0; i < ( sizeof(xPointsToPlot) / sizeof(*xPointsToPlot) ); i++)
     {
         const double distanceAlongXAxis = ( log (xPointsToPlot[i]) - log (20.0) ) / ( log (20000.0) - log (20.0) );
@@ -41,6 +43,7 @@ void FrequencyGraphComponent::paint (Graphics& g)
         g.drawSingleLineText ( String (std::round (xPointsToPlot[i])), pixelX, graphVerticalRange.getEnd() - 5, Justification::left );
     }
 
+    // draw dotted lines for y axis
     for (int i = 0; i < ( sizeof(yPointsToPlot) / sizeof(*yPointsToPlot) ); i++)
     {
         const double distanceAlongYAxis = ( log10 (yPointsToPlot[i]) - log10 (floatRef) ) / (log10 ( pow (10.0, -50.0/20.0) * floatRef) - log10 (floatRef) );
@@ -54,6 +57,7 @@ void FrequencyGraphComponent::paint (Graphics& g)
     
     response.startNewSubPath (graphHorizontalRange.getStart(), graphVerticalRange.getEnd());
 
+    // draw frequency response
     for (int i = 0; i < ( graphBins->size() / 2 ); i++)
     {
         const double freq = (*graphBins) [(i * 2)];

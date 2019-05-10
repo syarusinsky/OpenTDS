@@ -1,7 +1,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "LatencyCalibrator.h"
 
-LatencyCalibrator::LatencyCalibrator (AudioDeviceManager& dm, AudioSourcePlayer* sourcePlayer, AudioSource* source, int* lO, String* mTD)
+LatencyCalibrator::LatencyCalibrator (AudioDeviceManager& deviceManager, AudioSourcePlayer* sourcePlayer, AudioSource* source, int* latencyOffset, String* messageToDisplay)
 :   spikeTrainPlaying (true),
     running (false),
     spikeTrainSampleNum (0),
@@ -10,10 +10,10 @@ LatencyCalibrator::LatencyCalibrator (AudioDeviceManager& dm, AudioSourcePlayer*
     outputLatency (0),
     player (sourcePlayer),
     newSource (source),
-    latencyOffset (lO),
-    messageToDisplay (mTD)
+    latencyOffset (latencyOffset),
+    messageToDisplay (messageToDisplay)
 {
-    AudioIODevice* device = dm.getCurrentAudioDevice();
+    AudioIODevice* device = deviceManager.getCurrentAudioDevice();
     outputLatency = device->getOutputLatencyInSamples();
     
     startTimer (100);
@@ -24,32 +24,28 @@ LatencyCalibrator::LatencyCalibrator (AudioDeviceManager& dm, AudioSourcePlayer*
     *(messageToDisplay) = m;
 }
 
-LatencyCalibrator::~LatencyCalibrator()
-{
-}
+LatencyCalibrator::~LatencyCalibrator() {}
 
 void LatencyCalibrator::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
     const ScopedLock sl (lock);
     
-    spikeTrain = new AudioSampleBuffer (1, sampleRate);
-    recordingBuffer = new AudioSampleBuffer (1, sampleRate * 5);
+    spikeTrain = std::make_unique<AudioSampleBuffer> (1, sampleRate);
+    recordingBuffer = std::make_unique<AudioSampleBuffer> (1, sampleRate * 5); // 5 is chosen arbitrarily, but rountrip latency should never exceed this
     recordingBuffer->clear();
     
-    generateSpikeTrain();
+    generateSpikeTrain(); // this method fills the spikeTrain
     
     running = true;
 }
 
-void LatencyCalibrator::releaseResources()
-{
-}
+void LatencyCalibrator::releaseResources() {}
 
 void LatencyCalibrator::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill)
 {
     const ScopedLock sl (lock);
     
-    if (running)
+    if (running) // running flag set by timerCallback
     {
         float* recordingPointer = recordingBuffer->getWritePointer (0);
         const int recordingSize = recordingBuffer->getNumSamples();
@@ -57,7 +53,7 @@ void LatencyCalibrator::getNextAudioBlock (const AudioSourceChannelInfo& bufferT
         float* const bufferWritePointer = bufferToFill.buffer->getWritePointer (0);
         const float* const bufferReadPointer = bufferToFill.buffer->getReadPointer (0);
         
-        if (spikeTrainPlaying)
+        if (spikeTrainPlaying) // while there are still samples to output from spikeTrain, write those samples to the buffer and record input
         {
             const int size = spikeTrain->getNumSamples();
             const float* const spikeTrainReadPointer = spikeTrain->getReadPointer (0);
@@ -78,14 +74,14 @@ void LatencyCalibrator::getNextAudioBlock (const AudioSourceChannelInfo& bufferT
                     recordingSampleNum++;
                 }
             }
-        } else
+        } else // if there are no more samples to output from spikeTrain, record input until recording buffer is full
         {
             for (int i = 0; i < bufferToFill.numSamples; i++)
             {
                 if (recordingSampleNum < recordingSize)
                 {
                     recordingPointer[recordingSampleNum] = bufferReadPointer[i];
-                    bufferWritePointer[i] = 0;
+                    bufferWritePointer[i] = -7;
                     recordingSampleNum++;
                 } else
                 {
@@ -99,6 +95,7 @@ void LatencyCalibrator::getNextAudioBlock (const AudioSourceChannelInfo& bufferT
     }
 }
 
+// sets running flag to false if recording is complete
 void LatencyCalibrator::timerCallback()
 {
     if (running == true && recordingSampleNum >= recordingBuffer->getNumSamples())
@@ -110,6 +107,7 @@ void LatencyCalibrator::timerCallback()
     }
 }
 
+// fills the spikeTrain AudioBuffer
 void LatencyCalibrator::generateSpikeTrain()
 {
     const ScopedLock sl (lock);
@@ -118,6 +116,7 @@ void LatencyCalibrator::generateSpikeTrain()
     const float* const readPointer = spikeTrain->getReadPointer (0);
     const int size = spikeTrain->getNumSamples();
     
+    // fill spikeTrain with 10 spikes
     spikeIncr = (size / 10);
     int spikePoints[10] = { spikeIncr, spikeIncr * 2, spikeIncr * 3, spikeIncr * 4, spikeIncr * 5, spikeIncr * 6, spikeIncr * 7, spikeIncr * 8, spikeIncr * 9, spikeIncr * 10 };
     
@@ -135,17 +134,18 @@ void LatencyCalibrator::generateSpikeTrain()
     }
 }
 
+// this method parses the recording looking for spikes, compares them with the original recording, and sets the latency offset
 void LatencyCalibrator::parseRecording()
 {   
     const float* readPointer = recordingBuffer->getReadPointer (0);
     
     const int size = recordingBuffer->getNumSamples();
-    const int windowSize = 20;
+    const int windowSize = 20; // we pass through the buffer by "windows" that allow us to get the RMS values
     
     ScopedPointer<Array<float>> rmsValues = new Array<float>();
     rmsValues->resize (size / windowSize);
     
-    for (int i = 0; i < size; i += windowSize)
+    for (int i = 0; i < size; i += windowSize) // incrementing by windowSize
     {
         float rms = 0;
         
@@ -156,7 +156,7 @@ void LatencyCalibrator::parseRecording()
         
         rms = sqrt ( rms / windowSize );
         
-        rmsValues->set ((i / windowSize), rms);
+        rmsValues->set ((i / windowSize), rms); // store the RMS values
     }
     
     const float threshold = 10.0;
@@ -212,33 +212,4 @@ void LatencyCalibrator::parseRecording()
     }
     
     player->setSource (newSource);
-    
-    /* =============== USED FOR LOGGING THE TRANSIENTS FOR GRAPHING PURPOSES ====================================================
-    Logger::setCurrentLogger ( new FileLogger ( File ("C:/Users/Stevey/Pictures/ATII Progress/rmsValues.txt"), "RMS VALUES", 0 ) );
-    
-    for (int p = 0; p < (size / windowSize); p++)
-    {
-        String message;
-        message << p << newLine;
-        message << String (rmsValues->getReference (p)) << newLine;
-        Logger::getCurrentLogger()->writeToLog ( message );
-    }
-    */
-    
-    /* =============== USED FOR WRITING AUDIO FILE OF RECORDING ====================================================
-    File file ("C:/Users/Stevey/Pictures/ATII Progress/SpikeTrain.wav");
-    file.deleteFile();
-    FileOutputStream fileStream (file);
-    if (fileStream.openedOk())
-    {
-        WavAudioFormat wavFormat;
-        ScopedPointer<AudioFormatWriter> writer = wavFormat.createWriterFor (&fileStream, 44100, 1, 16, StringPairArray(), 0);
-        writer->writeFromAudioSampleBuffer (*recordingBuffer.get(), 0, size);
-        
-        delete writer;
-    } else
-    {
-        Logger::getCurrentLogger()->writeToLog ("Filestream not opened ok");
-    } =================================================================================
-    */
 }

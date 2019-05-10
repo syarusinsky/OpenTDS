@@ -1,12 +1,12 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "AudioSettingsComponent.h"
 
-
-AudioSettingsComponent::AudioSettingsComponent ( AudioDeviceManager& dm, unsigned int inputs, unsigned int outputs )
+AudioSettingsComponent::AudioSettingsComponent ( AudioDeviceManager& deviceManager, unsigned int inputs, unsigned int outputs )
 {
-    addAndMakeVisible ( audioSettingsButton = new TextButton ("Audio Settings") );
+    audioSettingsButton = std::make_unique<TextButton> ("Audio Settings");
+    addAndMakeVisible ( audioSettingsButton.get() );
     
-    audioDeviceSelector = new AudioDeviceSelectorComponent ( dm, inputs, inputs, outputs, outputs, false, false, false, false );
+    audioDeviceSelector = std::make_unique<AudioDeviceSelectorComponent> ( deviceManager, inputs, inputs, outputs, outputs, false, false, false, false );
     
     audioSettingsButton->addListener (this);
 }
@@ -16,22 +16,10 @@ AudioSettingsComponent::~AudioSettingsComponent()
     audioSettingsButton->removeListener (this);
 }
 
-void AudioSettingsComponent::paint (Graphics& g)
-{
-}
-
-void AudioSettingsComponent::resized()
-{
-    int buttonWidth = 100;
-    Rectangle<int> area = getLocalBounds();
-    area.removeFromLeft ( getWidth() - buttonWidth );
-    audioSettingsButton->setBounds (area);
-}
-
 void AudioSettingsComponent::showAudioDeviceSelectorWindow()
 {
     DialogWindow::LaunchOptions options;
-    options.content.setNonOwned (audioDeviceSelector);
+    options.content.setNonOwned (audioDeviceSelector.get());
     
     const int width = 300;
     const int height = 500;
@@ -54,9 +42,19 @@ void AudioSettingsComponent::showAudioDeviceSelectorWindow()
     }
 }
 
+void AudioSettingsComponent::paint (Graphics& g) {}
+
+void AudioSettingsComponent::resized()
+{
+    int buttonWidth = 100;
+    Rectangle<int> area = getLocalBounds();
+    area.removeFromLeft ( getWidth() - buttonWidth );
+    audioSettingsButton->setBounds (area);
+}
+
 void AudioSettingsComponent::buttonClicked (Button* button)
 {
-    if (button == audioSettingsButton)
+    if (button == audioSettingsButton.get())
     {
         showAudioDeviceSelectorWindow();
     }

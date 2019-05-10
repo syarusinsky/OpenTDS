@@ -1,15 +1,13 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "InfoBarComponent.h"
 
-InfoBarComponent::InfoBarComponent (String* mTD)
-:   messageToDisplay (mTD)
+InfoBarComponent::InfoBarComponent (String* messageToDisplay)
+:   messageToDisplay (messageToDisplay)
 {
     startTimer (500);
 }
 
-InfoBarComponent::~InfoBarComponent()
-{
-}
+InfoBarComponent::~InfoBarComponent() {}
 
 void InfoBarComponent::paint (Graphics& g)
 {

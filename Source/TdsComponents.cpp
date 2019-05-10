@@ -1,19 +1,20 @@
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "tdsComponents.h"
+#include "TdsComponents.h"
 
-TdsComponents::TdsComponents (int* lC, AudioDeviceManager* dm, AudioSourcePlayer* sourcePlayer, AudioSource* source, String* mTD)
+TdsComponents::TdsComponents (int* lC, AudioDeviceManager* deviceManager, AudioSourcePlayer* sourcePlayer, AudioSource* source, String* messageToDisplay)
 :   startF (0),
     endF (0),
     bandW (0),
     latencyComp (lC),
-    messageToDisplay (mTD),
+    messageToDisplay (messageToDisplay),
     sweepT (0.0),
     delay (0.0),
-    deviceManager (dm),
+    deviceManager (deviceManager),
     player (sourcePlayer),
     audioSource (source)
 {   
-    addAndMakeVisible ( startFreq = new TextEditor ("startFreq") );
+    startFreq = std::make_unique<TextEditor> ("startFreq");
+    addAndMakeVisible (startFreq.get());
     startFreq->setMultiLine (false);
     startFreq->setReturnKeyStartsNewLine (false);
     startFreq->setReadOnly (false);
@@ -22,7 +23,8 @@ TdsComponents::TdsComponents (int* lC, AudioDeviceManager* dm, AudioSourcePlayer
     startFreq->setPopupMenuEnabled (true);
     startFreq->setText ( String ("start freq") );
 
-    addAndMakeVisible ( endFreq = new TextEditor ("endFreq") );
+    endFreq = std::make_unique<TextEditor> ("endFreq");
+    addAndMakeVisible (endFreq.get());
     endFreq->setMultiLine (false);
     endFreq->setReturnKeyStartsNewLine (false);
     endFreq->setReadOnly (false);
@@ -31,7 +33,8 @@ TdsComponents::TdsComponents (int* lC, AudioDeviceManager* dm, AudioSourcePlayer
     endFreq->setPopupMenuEnabled (true);
     endFreq->setText ( String ("end Freq") );
 
-    addAndMakeVisible ( sweepTime = new TextEditor ("sweepTime") );
+    sweepTime = std::make_unique<TextEditor> ("sweepTime");
+    addAndMakeVisible (sweepTime.get());
     sweepTime->setMultiLine (false);
     sweepTime->setReturnKeyStartsNewLine (false);
     sweepTime->setReadOnly (false);
@@ -40,7 +43,8 @@ TdsComponents::TdsComponents (int* lC, AudioDeviceManager* dm, AudioSourcePlayer
     sweepTime->setPopupMenuEnabled (true);
     sweepTime->setText ( String ("time (seconds)") );
 
-    addAndMakeVisible ( bandwidth = new TextEditor ("bandwidth") );
+    bandwidth = std::make_unique<TextEditor> ("bandwidth");
+    addAndMakeVisible (bandwidth.get());
     bandwidth->setMultiLine (false);
     bandwidth->setReturnKeyStartsNewLine (false);
     bandwidth->setReadOnly (false);
@@ -49,7 +53,8 @@ TdsComponents::TdsComponents (int* lC, AudioDeviceManager* dm, AudioSourcePlayer
     bandwidth->setPopupMenuEnabled (true);
     bandwidth->setText ( String ("bandwidth") );
 
-    addAndMakeVisible ( timeOfFlight = new TextEditor ("timeOfFlight") );
+    timeOfFlight = std::make_unique<TextEditor> ("timeOfFlight");
+    addAndMakeVisible (timeOfFlight.get());
     timeOfFlight->setMultiLine (false);
     timeOfFlight->setReturnKeyStartsNewLine (false);
     timeOfFlight->setReadOnly (false);
@@ -58,7 +63,8 @@ TdsComponents::TdsComponents (int* lC, AudioDeviceManager* dm, AudioSourcePlayer
     timeOfFlight->setPopupMenuEnabled (true);
     timeOfFlight->setText ( String ("delay (ms)") );
 
-    addAndMakeVisible ( temperature = new TextEditor ("temperature") );
+    temperature = std::make_unique<TextEditor> ("temperature");
+    addAndMakeVisible (temperature.get());
     temperature->setMultiLine (false);
     temperature->setReturnKeyStartsNewLine (false);
     temperature->setReadOnly (false);
@@ -67,7 +73,8 @@ TdsComponents::TdsComponents (int* lC, AudioDeviceManager* dm, AudioSourcePlayer
     temperature->setPopupMenuEnabled (true);
     temperature->setText ( String ("temp (F)") );
 
-    addAndMakeVisible ( distance = new TextEditor ("distance") );
+    distance = std::make_unique<TextEditor> ("distance");
+    addAndMakeVisible (distance.get());
     distance->setMultiLine (false);
     distance->setReturnKeyStartsNewLine (false);
     distance->setReadOnly (false);
@@ -76,31 +83,21 @@ TdsComponents::TdsComponents (int* lC, AudioDeviceManager* dm, AudioSourcePlayer
     distance->setPopupMenuEnabled (true);
     distance->setText ( String ("distance (ft)") );
     
-    addAndMakeVisible ( sweepButton = new TextButton ("sweepButton") );
+    sweepButton = std::make_unique<TextButton> ("sweepButton");
+    addAndMakeVisible (sweepButton.get());
     sweepButton->setButtonText ( String ("sweep") );
     sweepButton->addListener (this);
     
-    graphBins = new Array<float> ();
+    graphBins = std::make_unique<Array<float>> ();
     graphBins->insertMultiple ( 0, 0, 100 );
     
-    addAndMakeVisible ( frequencyGraphComponent = new FrequencyGraphComponent (graphBins.get(), &graphFlag) );
+    frequencyGraphComponent = std::make_unique<FrequencyGraphComponent> (graphBins.get(), &graphFlag);
+    addAndMakeVisible (frequencyGraphComponent.get());
     
     graphFlag.setValue (false);
 }
 
-TdsComponents::~TdsComponents()
-{
-    startFreq = nullptr;
-    endFreq = nullptr;
-    sweepTime = nullptr;
-    bandwidth = nullptr;
-    timeOfFlight = nullptr;
-    temperature = nullptr;
-    distance = nullptr;
-    sweepButton = nullptr;
-    
-    frequencyGraphComponent = nullptr;
-}
+TdsComponents::~TdsComponents() {}
 
 void TdsComponents::paint (Graphics& g)
 {
@@ -146,7 +143,7 @@ void TdsComponents::resized()
 
 void TdsComponents::buttonClicked (Button* button)
 {
-    if (button == sweepButton)
+    if (button == sweepButton.get())
     {
         const int sF = startFreq->getText().getIntValue();
         const int eF = endFreq->getText().getIntValue();
@@ -156,6 +153,7 @@ void TdsComponents::buttonClicked (Button* button)
         const float dst = distance->getText().getFloatValue();
         const float del = timeOfFlight->getText().getFloatValue();
 
+        // if settings are valid, start a TDS sweep
         if (sF >= 20 && sF <= 20000 && eF >= 20 && eF <= 20000 && sT >= 0.01 && sT <= 10.0 && bW >= 20.0 && bW <= 1500.0)
         {
             startF = sF;
@@ -189,8 +187,8 @@ void TdsComponents::buttonClicked (Button* button)
             {   
                 if (blockSize == 128 || blockSize == 256 || blockSize == 512 || blockSize == 1024 || blockSize == 2048)
                 {
-                    tdsSweep = new TdsSweep (startF, endF, sweepT, bandW, delay, blockSize, sampleRate, player, audioSource, messageToDisplay, graphBins.get(), &graphFlag);
-                    player->setSource (tdsSweep);
+                    tdsSweep = std::make_unique<TdsSweep> (startF, endF, sweepT, bandW, delay, blockSize, sampleRate, player, audioSource, messageToDisplay, graphBins.get(), &graphFlag);
+                    player->setSource (tdsSweep.get());
                 } else
                 {
                     *(messageToDisplay) = String ("This is Not a Valid Buffer Size, Use 2^n");

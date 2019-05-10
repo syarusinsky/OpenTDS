@@ -1,46 +1,38 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Chirp.h"
 
-Chirp::Chirp (int sF, int eF, float dur, int sR)
-:   currentFreq (sF),
-    endFreq (eF),
-    sampleRate (sR),
+Chirp::Chirp (int startingFreq, int endingFreq, float duration, int sampleRate)
+:   currentFreq (startingFreq),
+    endFreq (endingFreq),
+    sampleRate (sampleRate),
     currentAngle (0.0),
     angleDelta (0.0),
-    freqIncr ( (eF - sF) / (dur * (sampleRate / 1000.0)) )
+    freqIncr ( (endingFreq - startingFreq) / (duration * (sampleRate / 1000.0)) )
 {
 }
-
-Chirp::~Chirp()
-{
-}
+Chirp::~Chirp() {}
 
 void Chirp::updateAngleAndFreq ()
 {
+    // since the frequency is changing per sample, we need to recalculate the angle delta
     const double cyclesPerSample = currentFreq / sampleRate;
     angleDelta = cyclesPerSample * 2.0 * double_Pi;
     
-    currentAngle += angleDelta;
+    // then we update the current angle and frequency
+    currentAngle += angleDelta; 
     currentFreq += freqIncr;
 }
 
-const float Chirp::processSingleSample()
+float Chirp::processSingleSample()
 {
     if (currentFreq >= endFreq)
     {
-        return (0.0);
+        return 0.0;
     } else
     {
-        return ((float) std::sin (currentAngle));
+        return ( (float) std::sin(currentAngle) );
     }
 }
 
-const float Chirp::returnCurrentFreq()
-{
-    return currentFreq;
-}
-
-const float Chirp::returnFreqIncr()
-{
-    return freqIncr;
-}
+float Chirp::getCurrentFreq() { return currentFreq; }
+float Chirp::getFreqIncr() { return freqIncr; }
